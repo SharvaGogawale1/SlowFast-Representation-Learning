@@ -623,6 +623,7 @@ class MSSeparateHead(nn.Module):
                             num_heads=dim_out // 64,
                             mlp_ratio=mlp_ratio,
                             qkv_bias=qkv_bias,
+                            separate_qkv= cfg.MVIT.SEPARATE_QKV,
                             drop_rate=drop_rate,
                             drop_path=0.0,
                             norm_layer=norm_layer,
