@@ -1,5 +1,5 @@
 ````markdown
-# SlowFast — Clean Installation & Usage
+# SlowFast — Clean Installation & Usage 
 
 Follow the steps for a clean installation and using the SlowFast repo.
 
