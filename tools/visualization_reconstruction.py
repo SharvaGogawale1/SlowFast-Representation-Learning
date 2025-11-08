@@ -172,16 +172,23 @@ if __name__ == "__main__":
             N = frames.shape[0]
             mask_reshaped = mask.reshape(N, -1, 1)
             
+
             # Initialize reconstruction with original patches
-            reconstruction_patches = patches.clone()
-            
-            # Replace only the masked patches with predictions
-            # mask is 1 for removed (masked), 0 for kept (visible)
-            mask_indices = mask.squeeze(-1).bool()  # [N, num_patches]
-            reconstruction_patches[mask_indices] = pred.reshape(-1, pred.shape[-1])
-            
-            # Unpatchify to get videos
-            reconstructed_video = model._unpatchify(reconstruction_patches)
+            reconstruction_patches = patches.clone()
+            
+            if mask_ratio > 0:
+                # Replace only the masked patches with predictions
+                mask_indices = mask.squeeze(-1).bool()  # [N, num_patches]
+                reconstruction_patches[mask_indices] = pred.reshape(-1, pred.shape[-1])
+
+                # Unpatchify masked video
+                masked_video = model._unpatchify(patches * (1 - mask_reshaped))
+            else:
+                # No masking, so masked_video is just the original
+                masked_video = im_viz
+            
+            # Unpatchify to get reconstructed video
+            reconstructed_video = model._unpatchify(reconstruction_patches)
             masked_video = model._unpatchify(patches * (1 - mask_reshaped))
             
             # Prepare tensors for visualization
